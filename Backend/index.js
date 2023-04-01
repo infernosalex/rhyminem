@@ -1,7 +1,6 @@
 //#region Imports
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const methodOverride = require('method-override');
 const session = require('express-session');
@@ -19,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(methodOverride());
 app.use(
 	session({
-		secret: 'sample secret',
+		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: false,
 		cookie: {
@@ -34,3 +33,24 @@ app.use(
 	})
 );
 // #endregion
+
+// #region routes
+app.use('/generate', require('./routes/generate'));
+
+//#endregion
+
+// #region error handling
+app.use((err, req, res, next) => {
+	console.error(err.stack);
+	res.status(500).send('Internal server error');
+});
+
+app.use((req, res, next) => {
+	res.status(404).send('Not found');
+});
+// #endregion
+
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+	console.log(`Server listening on port ${port}`);
+});
