@@ -1,0 +1,73 @@
+@import '../../variables.scss';
+
+.content {
+	min-height: 100svh;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	padding-top: 25px;
+	align-items: center;
+
+	font-family: 'Montserrat', sans-serif;
+}
+.valid {
+	color: #fdfdfd;
+	background: #606060;
+}
+
+.topPart {
+	padding-top: 10px;
+	text-align: center;
+}
+
+.prompt {
+	margin-top: -10em;
+	h2 {
+		padding-bottom: 15px;
+		font-weight: normal;
+
+		text-align: center;
+		color: #fff;
+	}
+}
+.formPrompt {
+	background: $darkGray;
+	box-shadow: 0px 4px 4px 3px rgba(0, 0, 0, 0.25);
+
+	border-radius: 8px;
+	padding: 5px;
+
+	display: inline-flex;
+	align-items: center;
+}
+.loadingScreen {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #000000c0;
+	z-index: 1000;
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: normal;
+	.loadingScreenContent {
+		text-align: center;
+		.loadingScreenSpinner {
+			padding: 20px;
+			font-size: 3.2em;
+			svg {
+				animation: rotate 3s linear infinite;
+			}
+		}
+	}
+}
+@keyframes rotate {
+	to {
+		transform: rotate(360deg);
+	}
+}

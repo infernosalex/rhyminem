@@ -1,0 +1,23 @@
+@import '../../variables.scss';
+
+.promptInput {
+	min-width: 500px;
+
+	padding: 5px 10px;
+
+	outline: none;
+	border: none;
+
+	color: #fff;
+	background: transparent;
+}
+button {
+	border: none;
+	padding: 10px;
+
+	color: $lightGray;
+	background: transparent;
+	&:hover {
+		color: #e6e6e6;
+	}
+}

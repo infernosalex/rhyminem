@@ -1,0 +1,42 @@
+@import './variables.scss';
+
+.bg {
+	position: absolute;
+	top: 0;
+	bottom: 0em;
+	left: 0;
+	right: 0;
+
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+
+	font-size: 22vw;
+	font-family: 'Abril Fatface', cursive;
+	line-height: 0.65;
+
+	color: #2c2c2c;
+	background-color: #282828;
+
+	mask-image: linear-gradient(to bottom, transparent, black);
+	z-index: -1;
+
+	min-height: 100dvh;
+}
+.mask {
+	position: absolute;
+	// left: calc(50%);
+	// top: calc(50%);
+
+	width: 220vw;
+	height: 220vh;
+
+	// margin-bottom: 0.2em;
+	// margin-right: 0.2em;
+
+	background-image: radial-gradient(
+		circle at center,
+		transparent 20%,
+		#282828 20.01%
+	);
+}

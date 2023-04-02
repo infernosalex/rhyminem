@@ -1,0 +1,32 @@
+@import '../../variables.scss';
+
+.options {
+	position: relative;
+	padding-top: 10px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	button {
+		color: #fff;
+		padding: 5px 10px;
+
+		text-align: center;
+		align-items: center;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		svg {
+			margin-left: 10px;
+			transition: transform 0.25s ease;
+
+			&.active {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+}
