@@ -11,3 +11,6 @@ html {
 	box-sizing: border-box;
 	font-family: inherit;
 }
+body {
+	overflow-y: hidden;
+}

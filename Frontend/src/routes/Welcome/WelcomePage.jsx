@@ -7,6 +7,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BsGearFill } from 'react-icons/bs';
+import AddPoem from './AddPoem';
 
 export default function WelcomePage() {
 	const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function WelcomePage() {
 		word: '',
 		temperature: 0.7,
 		frequencyPenalty: 0.0,
-		model: 0
+		model: 0,
 	});
 
 	const [prompt, setPrompt] = useState('');
@@ -34,7 +35,7 @@ export default function WelcomePage() {
 			model: options.model,
 			style: options.style,
 			temperature: options.temperature,
-			frequencyPenalty: options.frequencyPenalty
+			frequencyPenalty: options.frequencyPenalty,
 		});
 		console.log(response.data);
 		navigate(`/poem/${response.data.id}`);
@@ -47,6 +48,7 @@ export default function WelcomePage() {
 				<Header />
 				<div className={style.prompt}>
 					<h2>Enter your prompt</h2>
+					<AddPoem />
 					<form className={style.formPrompt} onSubmit={handleSubmit}>
 						<PromptInput prompt={prompt} setPrompt={setPrompt} />
 					</form>
