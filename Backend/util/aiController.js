@@ -23,15 +23,43 @@ const prompts = {
 	en: 'Write a ${0} line poem about "${1}"',
 	ro: 'Scrie o poezie de ${0} rânduri despre "${1}"'
 };
+const extra = {
+	style: {
+		en: ', in the style of a ${0}',
+		ro: ', în stilul unui ${0}'
+	},
+	acrostic: {
+		en: ' based on the word "${0}"',
+		ro: ' porning de la cuvântul "${0}"'
+	}
+};
+
 async function generatePoem(
 	userPrompt,
 	lines = 8,
 	language = 'en',
-	model = GPT3
+	model = GPT3,
+	temperature = 0.7,
+	frequencyPenalty = 0,
+	style = 'default',
+	word = ''
 ) {
-	const prompt = prompts[language]
+	let prompt = prompts[language]
 		.replace('${0}', lines)
 		.replace('${1}', userPrompt);
+
+	if (style !== 'default') {
+		prompt += extra.style[language].replace('${0}', style);
+
+		if (style === 'acrostic') {
+			prompt += extra.acrostic[language].replace('${0}', word);
+			lines = word.length;
+		}
+
+		if (style === 'haiku') {
+			lines = 3;
+		}
+	}
 
 	let response;
 	try {
@@ -42,7 +70,9 @@ async function generatePoem(
 					role: 'user',
 					content: prompt
 				}
-			]
+			],
+			temperature,
+			frequency_penalty: frequencyPenalty
 		});
 	} catch (error) {
 		console.log(error);
@@ -50,8 +80,25 @@ async function generatePoem(
 
 	return response.data.choices[0].message.content;
 }
-async function generateGPT4(userPrompt, lines = 8, language = 'en') {
-	return generatePoem(userPrompt, lines, language, GPT4);
+async function generateGPT4(
+	userPrompt,
+	lines = 8,
+	language = 'en',
+	temperature = 0.7,
+	frequencyPenalty = 0,
+	style = 'default',
+	word = ''
+) {
+	return generatePoem(
+		userPrompt,
+		lines,
+		language,
+		GPT4,
+		temperature,
+		frequencyPenalty,
+		style,
+		word
+	);
 }
 
 const summaryPrompts = {
@@ -107,13 +154,20 @@ async function moderate(prompt) {
 	} catch (error) {
 		console.log(error);
 	}
-
-	console.log(response.data.results);
 	return { flagged: response.data.flagged };
 }
 //#endregion
 
-async function generate({ userPrompt, lines = 8, language = 'en', model = 0 }) {
+async function generate({
+	userPrompt,
+	lines = 8,
+	word = '',
+	language = 'en',
+	model = 0,
+	style = 'default',
+	temperature = 0.7,
+	frequencyPenalty = 0
+}) {
 	let poem = null;
 
 	// check if prompt is flagged
@@ -122,10 +176,27 @@ async function generate({ userPrompt, lines = 8, language = 'en', model = 0 }) {
 
 	if (model === 0) {
 		// GPT3
-		poem = await generatePoem(userPrompt, lines, language);
+		poem = await generatePoem(
+			userPrompt,
+			lines,
+			language,
+			GPT3,
+			temperature,
+			frequencyPenalty,
+			style,
+			word
+		);
 	} else if (model === 1) {
 		// GPT4
-		poem = await generateGPT4(userPrompt, lines, language);
+		poem = await generateGPT4(
+			userPrompt,
+			lines,
+			language,
+			temperature,
+			frequencyPenalty,
+			style,
+			word
+		);
 	}
 
 	const image = generateSummary(poem, language).then((summary) => {
